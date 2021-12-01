@@ -1,4 +1,4 @@
-package cn.winter.core;
+package cn.winter.core.config;
 
 /**
  * @program spring-core
@@ -7,13 +7,13 @@ package cn.winter.core;
  * @create: 2021/11/20 22:23
  */
 public class BeanDefinition {
-    private Object bean;
+    private Class beanClass;
 
-    public BeanDefinition(Object bean) {
-        this.bean = bean;
+    public BeanDefinition(Class beanClass) {
+        this.beanClass = beanClass;
     }
 
     public Object getBean() {
-        return bean;
+        return beanClass;
     }
 }

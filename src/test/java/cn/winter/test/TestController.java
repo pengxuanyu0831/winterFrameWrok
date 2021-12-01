@@ -1,8 +1,5 @@
 package cn.winter.test;
 
-import cn.winter.core.BeanDefinition;
-import cn.winter.core.BeanFactory;
-import cn.winter.test.bean.UserService;
 import org.junit.Test;
 
 /**
@@ -15,7 +12,7 @@ public class TestController {
 
     @Test
     public void testBeanFactory() {
-        // 初始化bean工厂
+/*        // 初始化bean工厂
         BeanFactory beanFactory = new BeanFactory();
         // 注册beanDefinition
         BeanDefinition beanDefinition = new BeanDefinition(new UserService());
@@ -23,8 +20,7 @@ public class TestController {
         beanFactory.registerBeanDefinition("userService", beanDefinition);
         // 获取bean
         UserService userService = (UserService) beanFactory.getBean("userService");
-        userService.queryUserInfo();
-
+        userService.queryUserInfo();*/
     }
 
 }
