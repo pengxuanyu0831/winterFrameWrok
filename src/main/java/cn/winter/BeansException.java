@@ -6,9 +6,13 @@ package cn.winter;
  * @author: pengxuanyu
  * @create: 2021/12/05 10:28
  */
-public abstract class BeansException extends RuntimeException{
+public class BeansException extends RuntimeException{
     public BeansException(String msg) {
         super(msg);
+    }
+
+    public BeansException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 
 }

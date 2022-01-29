@@ -16,7 +16,7 @@ public abstract class AbstracBeanFactory extends DefaultSingletonBeanRegistry im
     @Override
     public Object getBean(String beanName) {
         Object bean = getSingleton(beanName);
-        if (Objects.nonNull(bean)) {
+        if (null != bean) {
             return bean;
         }
         // 这里没有实现获取方法，而是定义调用过程，以及提供抽象方法
