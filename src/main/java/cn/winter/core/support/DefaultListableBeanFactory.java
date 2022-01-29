@@ -1,5 +1,6 @@
 package cn.winter.core.support;
 
+import cn.winter.BeansException;
 import cn.winter.core.config.BeanDefinition;
 
 import java.util.HashMap;

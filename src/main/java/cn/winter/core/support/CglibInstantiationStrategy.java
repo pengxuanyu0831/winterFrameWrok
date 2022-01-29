@@ -28,7 +28,6 @@ public class CglibInstantiationStrategy implements InstantiationStrategy{
             return enhancer.create();
         } else {
             return enhancer.create(constructor.getParameterTypes(), args);
-
         }
     }
 }
