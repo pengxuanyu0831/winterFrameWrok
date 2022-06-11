@@ -1,5 +1,8 @@
 package cn.winter.core.config;
 
+import cn.winter.core.PropertyValue;
+import cn.winter.core.PropertyValues;
+
 /**
  * @program spring-core
  * @description:
@@ -9,8 +12,16 @@ package cn.winter.core.config;
 public class BeanDefinition {
     private Class beanClass;
 
+    private PropertyValues propertyValues;
+
     public BeanDefinition(Class beanClass) {
         this.beanClass = beanClass;
+        this.propertyValues = new PropertyValues();
+    }
+
+    public BeanDefinition(Class beanClass, PropertyValues propertyValues) {
+        this.beanClass = beanClass;
+        this.propertyValues = propertyValues;
     }
 
     public Object getBean() {
@@ -19,6 +30,10 @@ public class BeanDefinition {
 
     public Class getBeanClass() {
         return beanClass;
+    }
+
+    public PropertyValues getPropertyValues() {
+        return propertyValues;
     }
 
     public void setBeanClass(Class beanClass) {

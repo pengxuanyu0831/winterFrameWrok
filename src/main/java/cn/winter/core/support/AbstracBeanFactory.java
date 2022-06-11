@@ -31,7 +31,7 @@ public abstract class AbstracBeanFactory extends DefaultSingletonBeanRegistry im
         } else {
             // 这里没有实现获取方法，而是定义调用过程，以及提供抽象方法
             BeanDefinition beanDefinition = getBeanDefinition(beanName);
-            return createBean(beanName, beanDefinition, args);
+            return this.createBean(beanName, beanDefinition, args);
         }
     }
 

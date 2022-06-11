@@ -1,6 +1,5 @@
 package cn.winter.core.support;
 
-import cn.winter.BeansException;
 import cn.winter.core.config.BeanDefinition;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Map;
  * @author: pengxuanyu
  * @create: 2021/12/05 09:30
  */
-public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactory implements BeanDefintionRegistry {
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry {
     Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
 
     @Override
@@ -26,7 +25,7 @@ public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactor
     }
 
     @Override
-    public void registryBeanDefintion(String beanName, BeanDefinition beanDefinition) {
+    public void registryBeanDefinition(String beanName, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(beanName, beanDefinition);
     }
 }
