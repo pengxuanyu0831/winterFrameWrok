@@ -1,12 +1,18 @@
 package cn.winter.bean.factory.xml;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import cn.winter.BeansException;
 import cn.winter.bean.factory.support.AbstractBeanDefinitionReader;
+import cn.winter.core.PropertyValue;
+import cn.winter.core.config.BeanDefinition;
+import cn.winter.core.config.BeanReference;
 import cn.winter.core.io.Resource;
 import cn.winter.core.io.ResourceLoader;
 import cn.winter.core.support.BeanDefinitionRegistry;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,5 +61,61 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     // 这里是用hutool 工具类的，实际的spring框架是怎么用的？？？？
     protected void doLoadBeanDefinition(InputStream inputStream) throws ClassNotFoundException {
         Document document = XmlUtil.readXML(inputStream);
+        Element element = document.getDocumentElement();
+        NodeList nodes = element.getChildNodes();
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+            if (!(nodes.item(i) instanceof Element)) {
+                continue;
+            }
+            //
+            if (!"bean".equals(nodes.item(i).getNodeName())) {
+                continue;
+            }
+
+            // XML配置的属性
+            Element el = (Element) nodes.item(i);
+            String id = el.getAttribute("id");
+            String name = el.getAttribute("name");
+            String className = el.getAttribute("class");
+
+            Class<?> aClass = Class.forName(className);
+            // beanName 的优先级，id > name
+            String beanName = StrUtil.isNotEmpty(id) ? id : name;
+            if (StrUtil.isEmpty(beanName)) {
+                beanName = StrUtil.lowerFirst(aClass.getSimpleName());
+            }
+
+            // 定义beanDefinition
+            BeanDefinition beanDefinition = new BeanDefinition(aClass);
+            // 填充属性
+            for (int j = 0; j < el.getChildNodes().getLength(); j++) {
+                if (!(el.getChildNodes().item(j) instanceof Element)) {
+                    continue;
+                }
+                if (!"property".equals(el.getChildNodes().item(j).getNodeName())) {
+                    continue;
+                }
+                Element property = (Element) el.getChildNodes().item(j);
+                String attributeName = property.getAttribute("name");
+                String attributeValue = property.getAttribute("value");
+                String attributeRef = property.getAttribute("ref");
+
+                Object obj = StrUtil.isNotEmpty(attributeRef) ? new BeanReference(attributeRef) : attributeValue;
+                PropertyValue propertyValue = new PropertyValue(attributeName, attributeValue);
+                beanDefinition.getPropertyValues().addPropertyValues(propertyValue);
+
+                // 不允许重复注册
+                if (getRegistry().containsBeanDefinition(beanName)) {
+                    throw new BeansException("Duplication beanName [" + beanName + "] is not allowed");
+                }
+                // 注册beanDefinition
+                getRegistry().registryBeanDefinition(beanName, beanDefinition);
+
+            }
+
+
+
+        }
     }
 }
