@@ -111,11 +111,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 }
                 // 注册beanDefinition
                 getRegistry().registryBeanDefinition(beanName, beanDefinition);
-
             }
-
-
-
         }
     }
 }
