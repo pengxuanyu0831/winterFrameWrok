@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @program spring-core
- * @description:
+ * @description: 提供容器中bean迭代的功能 ----->效率低下
  * @author: pengxuanyu
  * @create: 2022/08/28 16:19
  * @version: 1.0

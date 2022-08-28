@@ -5,7 +5,7 @@ import cn.winter.bean.factory.BeanFactory;
 
 /**
  * @program spring-core
- * @description:
+ * @description: 是在BeanFactory的基础上实现对已存在实例的管理。可以使用这个接口集成其他框架，捆绑并填充并不由Spring管理生命周期并已存在的实例
  * @author: pengxuanyu
  * @create: 2022/08/28 16:24
  * @version: 1.0

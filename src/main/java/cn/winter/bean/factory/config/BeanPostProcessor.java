@@ -4,7 +4,7 @@ import cn.winter.bean.BeansException;
 
 /**
  * @program spring-core
- * @description:
+ * @description: 在bean对象实例化之后修改bean对象，也可替换bean对象，与AOP相关
  * @author: pengxuanyu
  * @create: 2022/08/28 16:45
  * @version: 1.0
