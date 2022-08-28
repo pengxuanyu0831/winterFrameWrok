@@ -110,7 +110,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     throw new BeansException("Duplication bean name [" + beanName + "] is not allowed");
                 }
                 // 注册beanDefinition
-                getRegistry().registryBeanDefinition(beanName, beanDefinition);
+                getRegistry().registerBeanDefinition(beanName, beanDefinition);
             }
         }
     }

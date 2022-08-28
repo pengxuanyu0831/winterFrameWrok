@@ -1,6 +1,7 @@
 package cn.winter.bean.factory;
 
 import cn.winter.bean.BeansException;
+import cn.winter.bean.factory.config.AutowireCapableBeanFactory;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanPostProcessor;
 
@@ -11,7 +12,7 @@ import cn.winter.bean.factory.config.BeanPostProcessor;
  * @create: 2022/08/28 16:18
  * @version: 1.0
  */
-public interface ConfigurableListableBeanFactory extends ListableBeanFactory,HierarchicalBeanFactory,ConfigurableBeanFactory{
+public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory{
 
     BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 

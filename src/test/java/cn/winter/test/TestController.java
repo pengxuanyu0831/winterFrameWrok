@@ -31,7 +31,7 @@ public class TestController {
         // 给UserService 注入UserDao
         // 注册beanDefinition
         BeanDefinition beanDefinition = new BeanDefinition(UserService.class,propertyValues);
-        beanFactory.registryBeanDefinition("userService", beanDefinition);
+        beanFactory.registerBeanDefinition("userService", beanDefinition);
 
         // 获取bean
         UserService userService = (UserService) beanFactory.getBean("userService");
