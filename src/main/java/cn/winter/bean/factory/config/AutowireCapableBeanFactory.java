@@ -1,6 +1,6 @@
 package cn.winter.bean.factory.config;
 
-import cn.winter.BeansException;
+import cn.winter.bean.BeansException;
 import cn.winter.bean.factory.BeanFactory;
 
 /**

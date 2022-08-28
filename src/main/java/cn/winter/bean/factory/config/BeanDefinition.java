@@ -1,6 +1,6 @@
 package cn.winter.bean.factory.config;
 
-import cn.winter.bean.factory.PropertyValues;
+import cn.winter.bean.PropertyValues;
 
 /**
  * @program spring-core

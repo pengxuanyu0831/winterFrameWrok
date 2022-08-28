@@ -1,8 +1,7 @@
 package cn.winter.bean.factory.support;
 
-import cn.winter.BeansException;
+import cn.winter.bean.BeansException;
 import cn.winter.bean.factory.config.BeanDefinition;
-import cn.winter.bean.factory.support.InstantiationStrategy;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 

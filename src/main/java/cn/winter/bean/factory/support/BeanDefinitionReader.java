@@ -1,7 +1,7 @@
 package cn.winter.bean.factory.support;
 
 
-import cn.winter.BeansException;
+import cn.winter.bean.BeansException;
 import cn.winter.core.io.Resource;
 import cn.winter.core.io.ResourceLoader;
 

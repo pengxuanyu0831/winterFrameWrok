@@ -1,6 +1,6 @@
 package cn.winter.bean.factory.support;
 
-import cn.winter.BeansException;
+import cn.winter.bean.BeansException;
 import cn.winter.bean.factory.config.BeanDefinition;
 
 import java.lang.reflect.Constructor;

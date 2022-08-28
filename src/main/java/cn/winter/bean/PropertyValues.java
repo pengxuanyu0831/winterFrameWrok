@@ -1,6 +1,6 @@
-package cn.winter.bean.factory;
+package cn.winter.bean;
 
-import cn.winter.bean.factory.PropertyValue;
+import cn.winter.bean.PropertyValue;
 
 import java.util.ArrayList;
 import java.util.List;

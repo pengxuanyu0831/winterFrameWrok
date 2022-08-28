@@ -1,7 +1,7 @@
 package cn.winter.test;
 
-import cn.winter.bean.factory.PropertyValue;
-import cn.winter.bean.factory.PropertyValues;
+import cn.winter.bean.PropertyValue;
+import cn.winter.bean.PropertyValues;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanReference;
 import cn.winter.bean.factory.support.DefaultListableBeanFactory;

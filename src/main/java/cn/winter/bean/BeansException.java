@@ -1,4 +1,4 @@
-package cn.winter;
+package cn.winter.bean;
 
 /**
  * @program spring-core

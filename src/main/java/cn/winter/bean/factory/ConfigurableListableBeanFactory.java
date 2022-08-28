@@ -7,5 +7,5 @@ package cn.winter.bean.factory;
  * @create: 2022/08/28 16:18
  * @version: 1.0
  */
-public interface ConfigurableListableBeanFactory extends ListableBeanFactory{
+public interface ConfigurableListableBeanFactory extends ListableBeanFactory,HierarchicalBeanFactory,Config{
 }

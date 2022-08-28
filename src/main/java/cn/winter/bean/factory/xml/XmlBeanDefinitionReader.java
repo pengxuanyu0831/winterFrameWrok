@@ -2,9 +2,9 @@ package cn.winter.bean.factory.xml;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
-import cn.winter.BeansException;
+import cn.winter.bean.BeansException;
 import cn.winter.bean.factory.support.AbstractBeanDefinitionReader;
-import cn.winter.bean.factory.PropertyValue;
+import cn.winter.bean.PropertyValue;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanReference;
 import cn.winter.core.io.Resource;

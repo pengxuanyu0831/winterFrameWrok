@@ -1,6 +1,6 @@
 package cn.winter.bean.factory;
 
-import cn.winter.BeansException;
+import cn.winter.bean.BeansException;
 
 import java.util.Map;
 
