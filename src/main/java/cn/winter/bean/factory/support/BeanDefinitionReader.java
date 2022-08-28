@@ -4,7 +4,6 @@ package cn.winter.bean.factory.support;
 import cn.winter.BeansException;
 import cn.winter.core.io.Resource;
 import cn.winter.core.io.ResourceLoader;
-import cn.winter.core.support.BeanDefinitionRegistry;
 
 import java.io.IOException;
 

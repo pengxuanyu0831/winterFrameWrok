@@ -2,7 +2,6 @@ package cn.winter.bean.factory.support;
 
 import cn.winter.core.io.DefaultResourceLoader;
 import cn.winter.core.io.ResourceLoader;
-import cn.winter.core.support.BeanDefinitionRegistry;
 
 /**
  * @program spring-core

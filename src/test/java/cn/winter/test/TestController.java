@@ -1,11 +1,10 @@
 package cn.winter.test;
 
-import cn.winter.core.BeanFactory;
-import cn.winter.core.PropertyValue;
-import cn.winter.core.PropertyValues;
-import cn.winter.core.config.BeanDefinition;
-import cn.winter.core.config.BeanReference;
-import cn.winter.core.support.DefaultListableBeanFactory;
+import cn.winter.bean.factory.PropertyValue;
+import cn.winter.bean.factory.PropertyValues;
+import cn.winter.bean.factory.config.BeanDefinition;
+import cn.winter.bean.factory.config.BeanReference;
+import cn.winter.bean.factory.support.DefaultListableBeanFactory;
 import cn.winter.test.bean.UserDao;
 import cn.winter.test.bean.UserService;
 import org.junit.Test;

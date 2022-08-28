@@ -4,12 +4,12 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import cn.winter.BeansException;
 import cn.winter.bean.factory.support.AbstractBeanDefinitionReader;
-import cn.winter.core.PropertyValue;
-import cn.winter.core.config.BeanDefinition;
-import cn.winter.core.config.BeanReference;
+import cn.winter.bean.factory.PropertyValue;
+import cn.winter.bean.factory.config.BeanDefinition;
+import cn.winter.bean.factory.config.BeanReference;
 import cn.winter.core.io.Resource;
 import cn.winter.core.io.ResourceLoader;
-import cn.winter.core.support.BeanDefinitionRegistry;
+import cn.winter.bean.factory.support.BeanDefinitionRegistry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -102,12 +102,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 String attributeRef = property.getAttribute("ref");
 
                 Object obj = StrUtil.isNotEmpty(attributeRef) ? new BeanReference(attributeRef) : attributeValue;
-                PropertyValue propertyValue = new PropertyValue(attributeName, attributeValue);
+                PropertyValue propertyValue = new PropertyValue(attributeName, obj);
                 beanDefinition.getPropertyValues().addPropertyValues(propertyValue);
 
                 // 不允许重复注册
                 if (getRegistry().containsBeanDefinition(beanName)) {
-                    throw new BeansException("Duplication beanName [" + beanName + "] is not allowed");
+                    throw new BeansException("Duplication bean name [" + beanName + "] is not allowed");
                 }
                 // 注册beanDefinition
                 getRegistry().registryBeanDefinition(beanName, beanDefinition);

@@ -1,7 +1,8 @@
-package cn.winter.core.support;
+package cn.winter.bean.factory.support;
 
 import cn.winter.BeansException;
-import cn.winter.core.config.BeanDefinition;
+import cn.winter.bean.factory.config.BeanDefinition;
+import cn.winter.bean.factory.support.InstantiationStrategy;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 
@@ -13,7 +14,7 @@ import java.lang.reflect.Constructor;
  * @author: pengxuanyu
  * @create: 2022/01/29 17:38
  */
-public class CglibInstantiationStrategy implements InstantiationStrategy{
+public class CglibInstantiationStrategy implements InstantiationStrategy {
     @Override
     public Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor constructor, Object[] args) throws BeansException {
         Enhancer enhancer = new Enhancer();

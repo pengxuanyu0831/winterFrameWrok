@@ -1,10 +1,7 @@
-package cn.winter.core;
+package cn.winter.bean.factory;
 
 import cn.winter.BeansException;
-import cn.winter.core.config.BeanDefinition;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import cn.winter.bean.factory.config.BeanDefinition;
 
 /**
  * @program spring-core

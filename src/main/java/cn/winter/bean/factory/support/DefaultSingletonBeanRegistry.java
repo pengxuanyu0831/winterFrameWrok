@@ -1,4 +1,6 @@
-package cn.winter.core.config;
+package cn.winter.bean.factory.support;
+
+import cn.winter.bean.factory.config.SingletonBeanRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +11,7 @@ import java.util.Map;
  * @author: pengxuanyu
  * @create: 2021/12/01 22:35
  */
-public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry{
+public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
     private Map<String, Object> singletonBeanRegistry = new HashMap<>();
     @Override
     public Object getSingleton(String beanName) {

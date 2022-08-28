@@ -1,11 +1,8 @@
-package cn.winter.core.support;
+package cn.winter.bean.factory.support;
 
 import cn.winter.BeansException;
-import cn.winter.core.BeanFactory;
-import cn.winter.core.config.BeanDefinition;
-import cn.winter.core.config.DefaultSingletonBeanRegistry;
-
-import java.util.Objects;
+import cn.winter.bean.factory.BeanFactory;
+import cn.winter.bean.factory.config.BeanDefinition;
 
 /**
  * @program spring-core

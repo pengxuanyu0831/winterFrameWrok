@@ -1,6 +1,6 @@
-package cn.winter.core.support;
+package cn.winter.bean.factory.support;
 
-import cn.winter.core.config.BeanDefinition;
+import cn.winter.bean.factory.config.BeanDefinition;
 
 public interface BeanDefinitionRegistry {
     void registryBeanDefinition(String beanName, BeanDefinition beanDefinition);

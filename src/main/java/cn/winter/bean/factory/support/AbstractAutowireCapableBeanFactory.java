@@ -1,11 +1,11 @@
-package cn.winter.core.support;
+package cn.winter.bean.factory.support;
 
 import cn.hutool.core.bean.BeanException;
 import cn.hutool.core.bean.BeanUtil;
-import cn.winter.core.PropertyValue;
-import cn.winter.core.PropertyValues;
-import cn.winter.core.config.BeanDefinition;
-import cn.winter.core.config.BeanReference;
+import cn.winter.bean.factory.PropertyValue;
+import cn.winter.bean.factory.PropertyValues;
+import cn.winter.bean.factory.config.BeanDefinition;
+import cn.winter.bean.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 
@@ -15,7 +15,7 @@ import java.lang.reflect.Constructor;
  * @author: pengxuanyu
  * @create: 2021/12/05 09:22
  */
-public abstract class AbstractAutowireCapableBeanFactory extends  AbstracBeanFactory{
+public abstract class AbstractAutowireCapableBeanFactory extends AbstracBeanFactory {
     // 实例化的实现有两种 这里用的CGlib的实现方式
     private InstantiationStrategy instantiationStrategy = new CglibInstantiationStrategy();
     @Override
