@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * @program spring-core
- * @description:
+ * @description: 继承 DefaultResourceLoader 是为了处理spring.xml文件中配置的资源的加载
  * @author: pengxuanyu
  * @create: 2022/08/28 17:00
  * @version: 1.0

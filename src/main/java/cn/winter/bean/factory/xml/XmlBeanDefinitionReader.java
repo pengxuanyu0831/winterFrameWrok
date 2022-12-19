@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 /**
  * @program spring-core
- * @description:
+ * @description: 对XML文件的解析
  * @author: pengxuanyu
  * @create: 2022/08/08 22:52
  * @version: 1.0
@@ -56,6 +56,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         ResourceLoader resourceLoader = super.getResourceLoader();
         Resource resource = resourceLoader.getResource(location);
         loadBeanDefinitions(resource);
+    }
+
+    @Override
+    public void loadBeanDefinitions(String... locations) throws BeansException, IOException {
+        for (String s : locations) {
+            loadBeanDefinitions(s);
+        }
     }
 
     // 这里是用hutool 工具类的，实际的spring框架是怎么用的？？？？

@@ -4,6 +4,8 @@ import cn.winter.bean.BeansException;
 import cn.winter.bean.factory.ConfigurableListableBeanFactory;
 import cn.winter.bean.factory.support.DefaultListableBeanFactory;
 
+import java.io.IOException;
+
 /**
  * @program spring-core
  * @description:
@@ -30,5 +32,5 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
         return beanFactory;
     }
 
-    protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory);
+    protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws IOException;
 }
