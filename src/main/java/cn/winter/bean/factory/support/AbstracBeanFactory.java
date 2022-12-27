@@ -2,7 +2,12 @@ package cn.winter.bean.factory.support;
 
 import cn.winter.bean.BeansException;
 import cn.winter.bean.factory.BeanFactory;
+import cn.winter.bean.factory.ConfigurableBeanFactory;
 import cn.winter.bean.factory.config.BeanDefinition;
+import cn.winter.bean.factory.config.BeanPostProcessor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program spring-core
@@ -10,7 +15,10 @@ import cn.winter.bean.factory.config.BeanDefinition;
  * @author: pengxuanyu
  * @create: 2021/12/01 22:40
  */
-public abstract class AbstracBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
+public abstract class AbstracBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+    /** BeanPostProcessors to apply in createBean */
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
     @Override
     public Object getBean(String beanName) {
         return doGetBean(beanName, null);
@@ -35,4 +43,14 @@ public abstract class AbstracBeanFactory extends DefaultSingletonBeanRegistry im
     protected abstract BeanDefinition getBeanDefinition(String name);
 
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition,Object... args);
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+        this.beanPostProcessors.remove(beanPostProcessor);
+        this.beanPostProcessors.add(beanPostProcessor);
+    }
+
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return this.beanPostProcessors;
+    }
 }
