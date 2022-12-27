@@ -5,11 +5,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.winter.bean.BeansException;
 import cn.winter.bean.PropertyValue;
 import cn.winter.bean.PropertyValues;
+import cn.winter.bean.factory.DisposableBean;
 import cn.winter.bean.factory.config.AutowireCapableBeanFactory;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.bean.factory.config.BeanReference;
-import cn.winter.bean.factory.xml.InitializingBean;
+import cn.winter.bean.factory.InitializingBean;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -32,12 +33,22 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstracBeanFact
             bean = this.createBeanInstance(beanDefinition, beanName, args);
             // 填充对象属性，在实例化之后
             this.applyPropertyValues(beanName,bean,beanDefinition);
+            // 执行bean 的前置 和后置方法
+            bean = initializeBean(beanName, bean, beanDefinition);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
         // 实例化完成， 放到单例bean 的对象缓存中
         addBeanRegistry(beanName,bean);
         return bean;
+    }
+
+
+    protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof DisposableBean || beanDefinition.getDestroyMethodName() != null) {
+            // todo 
+            registerDisposableBean(beanName,);
+        }
     }
 
     protected Object createBeanInstance(BeanDefinition beanDefinition,

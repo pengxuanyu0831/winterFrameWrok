@@ -1,4 +1,4 @@
-package cn.winter.bean.factory.xml;
+package cn.winter.bean.factory;
 
 /**
  * @author xuanyu peng
