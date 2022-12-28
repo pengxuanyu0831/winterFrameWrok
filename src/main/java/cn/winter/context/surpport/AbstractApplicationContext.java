@@ -9,6 +9,7 @@ import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.context.ConfigurableApplicationContext;
 import cn.winter.core.io.DefaultResourceLoader;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -67,7 +68,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
      * @throws BeansException
      */
     @Override
-    public void refresh() throws BeansException {
+    public void refresh() throws BeansException, IOException {
         // 1 创建BeanFactory ，并加载BeanDefinition
         refreshBeanFactory();
 
@@ -85,7 +86,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     }
 
-    protected abstract void refreshBeanFactory() throws BeansException;
+    protected abstract void refreshBeanFactory() throws BeansException, IOException;
 
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
@@ -105,5 +106,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     }
 
+    @Override
+    public void registerShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
 
+    @Override
+    public void close() {
+        getBeanFactory().destroySingletons();
+    }
 }

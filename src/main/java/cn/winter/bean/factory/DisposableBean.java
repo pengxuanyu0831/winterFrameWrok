@@ -7,6 +7,7 @@ package cn.winter.bean.factory;
  *  * on destruction. A BeanFactory is supposed to invoke the destroy
  *  * method if it disposes a cached singleton. An application context
  *  * is supposed to dispose all of its singletons on close.
+ *  销毁操作的接口
  * @date 2022/12/28 0:00
  */
 public interface DisposableBean {

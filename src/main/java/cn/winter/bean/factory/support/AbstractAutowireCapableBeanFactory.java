@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author: pengxuanyu
  * @create: 2021/12/05 09:22
  */
-public abstract class AbstractAutowireCapableBeanFactory extends AbstracBeanFactory implements AutowireCapableBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
     // 实例化的实现有两种 这里用的CGlib的实现方式
     private InstantiationStrategy instantiationStrategy = new CglibInstantiationStrategy();
     @Override
@@ -36,18 +36,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstracBeanFact
             // 执行bean 的前置 和后置方法
             bean = initializeBean(beanName, bean, beanDefinition);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new BeansException("Instantiation of Bean Failed", e);
         }
+
+        // 注册实现了 DisposableBean 接口的Bean 对象
+        // 创建Bean 对象的实例的时候，先保存销毁的方法，方便后续调用
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
         // 实例化完成， 放到单例bean 的对象缓存中
-        addBeanRegistry(beanName,bean);
+        addSingleton(beanName,bean);
         return bean;
     }
 
 
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
         if (bean instanceof DisposableBean || beanDefinition.getDestroyMethodName() != null) {
-            // todo 
-            registerDisposableBean(beanName,);
+            registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
     }
 
@@ -114,6 +117,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstracBeanFact
             ((InitializingBean) bean).afterPropertiesSet();
         }
         String initMethodName = beanDefinition.getInitMethodName();
+        // 加入判断是为了防止二次销毁
         if (initMethodName != null && !initMethodName.equals("") && !(bean instanceof InitializingBean)) {
             Method method = beanDefinition.getBeanClass().getMethod(initMethodName);
             if (method == null) {

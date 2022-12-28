@@ -15,7 +15,7 @@ import java.util.List;
  * @author: pengxuanyu
  * @create: 2021/12/01 22:40
  */
-public abstract class AbstracBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
     /** BeanPostProcessors to apply in createBean */
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 

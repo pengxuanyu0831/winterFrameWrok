@@ -2,6 +2,8 @@ package cn.winter.context.surpport;
 
 import cn.winter.bean.BeansException;
 
+import java.io.IOException;
+
 /**
  * @author xuanyu peng
  * @description:
@@ -18,11 +20,11 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
      * @param configLocations
      * @throws BeansException
      */
-    public ClassPathXmlApplicationContext(String configLocations) throws BeansException {
+    public ClassPathXmlApplicationContext(String configLocations) throws BeansException, IOException {
         this(new String[]{configLocations});
     }
 
-    public ClassPathXmlApplicationContext(String[] strings) {
+    public ClassPathXmlApplicationContext(String[] strings) throws IOException {
         this.configLocations = strings;
         refresh();
     }
