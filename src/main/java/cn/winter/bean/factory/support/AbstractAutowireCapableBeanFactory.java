@@ -5,12 +5,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.winter.bean.BeansException;
 import cn.winter.bean.PropertyValue;
 import cn.winter.bean.PropertyValues;
-import cn.winter.bean.factory.DisposableBean;
+import cn.winter.bean.factory.*;
 import cn.winter.bean.factory.config.AutowireCapableBeanFactory;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.bean.factory.config.BeanReference;
-import cn.winter.bean.factory.InitializingBean;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -97,6 +96,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+            if (bean instanceof BeanClassLoaderAware) {
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getClassLoader());
+            }
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+        }
+
+
         // 先执行 Before 处理
         Object o = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         try {

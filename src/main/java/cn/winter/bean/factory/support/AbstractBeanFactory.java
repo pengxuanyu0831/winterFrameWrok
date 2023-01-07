@@ -5,6 +5,7 @@ import cn.winter.bean.factory.BeanFactory;
 import cn.winter.bean.factory.ConfigurableBeanFactory;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanPostProcessor;
+import cn.winter.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ import java.util.List;
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
     /** BeanPostProcessors to apply in createBean */
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
+    /** ClassLoader to resolve bean class names with, if necessary */
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     @Override
     public Object getBean(String beanName) {
@@ -52,5 +56,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
+    }
+
+    public ClassLoader getClassLoader() {
+        return this.beanClassLoader;
     }
 }
