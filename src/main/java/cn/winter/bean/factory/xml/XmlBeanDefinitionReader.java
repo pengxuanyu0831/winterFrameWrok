@@ -85,6 +85,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String id = el.getAttribute("id");
             String name = el.getAttribute("name");
             String className = el.getAttribute("class");
+            String initMethod = el.getAttribute("init-method");
+            String destroyMethod = el.getAttribute("destroy-method");
+            String scope = el.getAttribute("scope");
+
 
             Class<?> aClass = Class.forName(className);
             // beanName 的优先级，id > name
@@ -95,6 +99,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
             // 定义beanDefinition
             BeanDefinition beanDefinition = new BeanDefinition(aClass);
+            beanDefinition.setInitMethodName(initMethod);
+            beanDefinition.setDestroyMethodName(destroyMethod);
+
+            // step9 给bean对象添加scope属性的填充
+            if (scope != null && !scope.equals("")) {
+                beanDefinition.setScope(scope);
+            }
             // 填充属性
             for (int j = 0; j < el.getChildNodes().getLength(); j++) {
                 if (!(el.getChildNodes().item(j) instanceof Element)) {
