@@ -15,6 +15,9 @@ import java.util.Set;
  * @create: 2021/12/01 22:35
  */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
+    protected static final Object NULL_OBJECT = new Object();
+
+
     private Map<String, Object> singletonBeanRegistry = new HashMap<>();
 
     // 这个接口的方法最终会被 #AbstractApplicationContext 的 close() 方法通过getBeanFactory().destroySingletons()调用

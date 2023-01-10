@@ -17,7 +17,7 @@ import java.util.Objects;
 
 /**
  * @program spring-core
- * @description:
+ * @description: 单例模式和原型模式的区别就在于是否存放到内存中，如果是原型模式那么就不会存放到内存中，每次获取都重新创建对象，另外非 Singleton 类型的 Bean 不需要执行销毁方法
  * @author: pengxuanyu
  * @create: 2021/12/05 09:22
  */
@@ -41,13 +41,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 注册实现了 DisposableBean 接口的Bean 对象
         // 创建Bean 对象的实例的时候，先保存销毁的方法，方便后续调用
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
-        // 实例化完成， 放到单例bean 的对象缓存中
-        addSingleton(beanName,bean);
+        if (beanDefinition.isSingleton()) {
+            // 实例化完成， 放到单例bean 的对象缓存中
+            // 如果是单例bean 执行加入单例对象缓存中
+            addSingleton(beanName,bean);
+        }
+
         return bean;
     }
 
 
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        // 非单例bean对象，不执行销毁方法
+        if (!beanDefinition.isSingleton()) {
+            return;
+        }
         if (bean instanceof DisposableBean || beanDefinition.getDestroyMethodName() != null) {
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
