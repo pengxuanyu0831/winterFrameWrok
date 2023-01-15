@@ -17,10 +17,10 @@ import java.util.List;
  * @author: pengxuanyu
  * @create: 2021/12/01 22:40
  */
-public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory { // 原来继承的 DefaultSingletonBeanRegistry，修改
-//    为继承 FactoryBeanRegistrySupport。因为需要扩展出创建 FactoryBean 对象的能
-//    力，所以这就想一个链条服务上，截出一个段来处理额外的服务，并把链条再链接
-//            上
+public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
+// 原来继承的 DefaultSingletonBeanRegistry，修改
+// 为继承 FactoryBeanRegistrySupport。因为需要扩展出创建 FactoryBean 对象的能
+// 力，所以这就想一个链条服务上，截出一个段来处理额外的服务，并把链条再链接上
     /** BeanPostProcessors to apply in createBean */
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
