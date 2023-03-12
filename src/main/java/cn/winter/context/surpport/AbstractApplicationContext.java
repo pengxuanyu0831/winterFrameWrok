@@ -7,9 +7,13 @@ import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanFactoryPostProcessor;
 import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.context.ConfigurableApplicationContext;
+import cn.winter.context.event.ApplicationEventMulticaster;
+import cn.winter.context.event.ApplicationListener;
+import cn.winter.context.event.SimpleApplicationEventMulticaster;
 import cn.winter.core.io.DefaultResourceLoader;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -20,6 +24,10 @@ import java.util.Map;
  * @version: 1.0
  */
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
+    public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
+
+    private ApplicationEventMulticaster applicationEventMulticaster;
+
     @Override
     public Object getBean(String name) throws BeansException {
         return null;
@@ -84,6 +92,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         // 5 BeanPostProcessor需提前于其他Bean对象实例化之前执行注册操作
         registerBeanPostProcessor(beanFactory);
 
+        // 6 初始化事件发布者
+        initApplicationEventMulticaster();
+
         // 6 提前实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
 
@@ -106,7 +117,24 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         for (BeanPostProcessor p : types.values()) {
             beanFactory.addBeanPostProcessor(p);
         }
+    }
 
+    private void initApplicationEventMulticaster() {
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+        applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+        beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, applicationEventMulticaster);
+    }
+
+    private void registerListeners() {
+        Collection<ApplicationListener> applicationListeners = getBeansOfType(ApplicationListener.class).values();
+        for (ApplicationListener listener : applicationListeners) {
+            applicationEventMulticaster.addApplicationListener(listener);
+        }
+    }
+
+    
+    public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
+        return getBeanFactory().getBeansOfTypes(type);
     }
 
     @Override

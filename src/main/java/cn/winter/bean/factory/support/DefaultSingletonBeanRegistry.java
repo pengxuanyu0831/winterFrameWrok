@@ -7,6 +7,7 @@ import cn.winter.bean.factory.config.SingletonBeanRegistry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program spring-core
@@ -22,9 +23,15 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     // 这个接口的方法最终会被 #AbstractApplicationContext 的 close() 方法通过getBeanFactory().destroySingletons()调用
     private final Map<String, DisposableBean> disposableBeanMap = new HashMap<>();
+
+    private Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
     @Override
     public Object getSingleton(String beanName) {
         return singletonBeanRegistry.get(beanName);
+    }
+
+    public void registerSingleton(String beanName, Object singletonObject) {
+        singletonObjects.put(beanName, singletonObject);
     }
 
     protected void addSingleton(String beanName, Object singletonObject) {
