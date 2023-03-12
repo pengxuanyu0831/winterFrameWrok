@@ -37,14 +37,15 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
         return doGetBean(name, args);
     }
 
-    private Object doGetBean(String beanName, Object... args) {
+    private <T> T doGetBean(String beanName, Object... args) {
         Object bean = getSingleton(beanName);
         if (null != bean) {
-            return getObjectForBeanInstance(bean, beanName);
+            // 如果是FactoryBean，则需要调用FactoryBean#getObject
+            return (T)getObjectForBeanInstance(bean, beanName);
         }
         // 这里没有实现获取方法，而是定义调用过程，以及提供抽象方法
         BeanDefinition beanDefinition = getBeanDefinition(beanName);
-        return this.createBean(beanName, beanDefinition, args);
+        return (T) this.createBean(beanName, beanDefinition, args);
     }
 
     private Object getObjectForBeanInstance(Object beanInstance, String beanName) {
