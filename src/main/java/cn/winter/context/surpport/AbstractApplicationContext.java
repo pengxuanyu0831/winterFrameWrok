@@ -95,7 +95,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         // 6 初始化事件发布者
         initApplicationEventMulticaster();
 
-        // 6 提前实例化单例Bean对象
+        // 7 提前实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
 
     }
