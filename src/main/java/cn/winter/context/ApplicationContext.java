@@ -9,5 +9,5 @@ import cn.winter.bean.factory.ListableBeanFactory;
  * @create: 2022/08/28 16:58
  * @version: 1.0
  */
-public interface ApplicationContext extends ListableBeanFactory {
+public interface ApplicationContext extends ListableBeanFactory,ApplicationEventPublisher {
 }

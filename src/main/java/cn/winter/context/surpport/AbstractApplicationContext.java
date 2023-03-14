@@ -6,9 +6,11 @@ import cn.winter.bean.factory.ConfigurableListableBeanFactory;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanFactoryPostProcessor;
 import cn.winter.bean.factory.config.BeanPostProcessor;
+import cn.winter.context.ApplicationEvent;
 import cn.winter.context.ConfigurableApplicationContext;
 import cn.winter.context.event.ApplicationEventMulticaster;
 import cn.winter.context.event.ApplicationListener;
+import cn.winter.context.event.ContextRefreshedEvent;
 import cn.winter.context.event.SimpleApplicationEventMulticaster;
 import cn.winter.core.io.DefaultResourceLoader;
 
@@ -95,8 +97,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         // 6 初始化事件发布者
         initApplicationEventMulticaster();
 
-        // 7 提前实例化单例Bean对象
+        // 7 注册事件发布者
+        registerListeners();
+
+        // 8 提前实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
+
+        // 9 发布容器刷新完成事件
+        finishRefresh();
 
     }
 
@@ -130,6 +138,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         for (ApplicationListener listener : applicationListeners) {
             applicationEventMulticaster.addApplicationListener(listener);
         }
+    }
+
+    private void finishRefresh() {
+        publishEvent(new ContextRefreshedEvent(this));
+    }
+
+    @Override
+    public void publishEvent(ApplicationEvent event) {
+        applicationEventMulticaster.multicastEvent(event);
     }
 
     
