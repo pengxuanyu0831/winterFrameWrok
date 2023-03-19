@@ -8,10 +8,7 @@ import cn.winter.bean.factory.config.BeanFactoryPostProcessor;
 import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.context.ApplicationEvent;
 import cn.winter.context.ConfigurableApplicationContext;
-import cn.winter.context.event.ApplicationEventMulticaster;
-import cn.winter.context.event.ApplicationListener;
-import cn.winter.context.event.ContextRefreshedEvent;
-import cn.winter.context.event.SimpleApplicationEventMulticaster;
+import cn.winter.context.event.*;
 import cn.winter.core.io.DefaultResourceLoader;
 
 import java.io.IOException;
@@ -161,6 +158,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     @Override
     public void close() {
+        // 发布容器关闭事件
+        publishEvent(new ContextClosedEvent(this));
+
+        // 执行销毁单例bean的方法
         getBeanFactory().destroySingletons();
     }
 }
