@@ -13,11 +13,8 @@ import java.lang.reflect.Proxy;
  * <p>
  * JDK 动态代理
  * <p>
- *
- *
- *
- *
- *
+ * @deprecated 基于 JDK 实现的代理类，需要实现接口 AopProxy、InvocationHandler，这样就可
+ * 以把代理对象 getProxy 和反射调用方法 invoke 分开处理了
  * 作者：DerekYRC https://github.com/DerekYRC/mini-spring
  */
 public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
