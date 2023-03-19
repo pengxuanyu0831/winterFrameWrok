@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * @author xuanyu peng
- * @description:
+ * @description: 切点表达式，主要是对aspectj 包提供的表达式校验方法使用
  * @date 2023/3/19 21:43
  */
 public class AspectJExpressionPointCut implements Pointcut, ClassFilter, MethodMatcher {
