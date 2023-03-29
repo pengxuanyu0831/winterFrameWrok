@@ -1,9 +1,6 @@
 package cn.winter.aop;
 
-import cn.winter.aop.aspectj.TargetSource;
 import org.aopalliance.intercept.MethodInterceptor;
-
-import java.lang.annotation.Target;
 
 /**
  * @author xuanyu peng

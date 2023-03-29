@@ -1,4 +1,4 @@
-package cn.winter.aop.aspectj;
+package cn.winter.aop;
 
 /**
  * @author xuanyu peng
