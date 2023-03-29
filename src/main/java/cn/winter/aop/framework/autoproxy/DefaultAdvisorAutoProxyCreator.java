@@ -25,6 +25,7 @@ import java.util.Collection;
  *
  *
  * 作者：DerekYRC https://github.com/DerekYRC/mini-spring
+ * 融入 Bean 生命周期的自动代理创建者
  */
 public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPostProcessor, BeanFactoryAware {
 
@@ -42,6 +43,8 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfTypes(AspectJExpressionPointcutAdvisor.class).values();
 
+        // 获取了 advisors 以后就可以遍历相应的 AspectJExpressionPointcutAdvisor 填充对
+        //应的属性信息，包括：目标对象、拦截方法、匹配器，之后返回代理对象即可
         for (AspectJExpressionPointcutAdvisor advisor : advisors) {
             ClassFilter classFilter = advisor.getPointcut().getClassFilter();
             if (!classFilter.matches(beanClass)) continue;

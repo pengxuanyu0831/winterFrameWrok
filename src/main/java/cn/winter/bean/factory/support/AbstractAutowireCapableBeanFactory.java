@@ -6,10 +6,7 @@ import cn.winter.bean.BeansException;
 import cn.winter.bean.PropertyValue;
 import cn.winter.bean.PropertyValues;
 import cn.winter.bean.factory.*;
-import cn.winter.bean.factory.config.AutowireCapableBeanFactory;
-import cn.winter.bean.factory.config.BeanDefinition;
-import cn.winter.bean.factory.config.BeanPostProcessor;
-import cn.winter.bean.factory.config.BeanReference;
+import cn.winter.bean.factory.config.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -28,6 +25,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object createBean(String beanName, BeanDefinition beanDefinition,Object... args) {
         Object bean = null;
         try{
+            bean = resolveBeforeInstantiation(beanName, beanDefinition);
+            if (null != bean) {
+                return bean;
+            }
             // bean 对象的实例化
             bean = this.createBeanInstance(beanDefinition, beanName, args);
             // 填充对象属性，在实例化之后
@@ -59,6 +60,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (bean instanceof DisposableBean || beanDefinition.getDestroyMethodName() != null) {
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
+    }
+
+    protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorsBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
+    }
+
+    protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
+                if (null != result) return result;
+            }
+        }
+        return null;
     }
 
     protected Object createBeanInstance(BeanDefinition beanDefinition,
