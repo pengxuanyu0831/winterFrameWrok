@@ -15,7 +15,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,6 +69,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
     // 这里是用hutool 工具类的，实际的spring框架是怎么用的？？？？
+    // 查看 package org.springframework.beans.factory.xml  ---spring-beans5.2.9
     protected void doLoadBeanDefinition(InputStream inputStream) throws ClassNotFoundException, DocumentException {
         SAXReader reader = new SAXReader();
         Document document = reader.read(inputStream);
