@@ -7,6 +7,7 @@ import cn.winter.bean.factory.FactoryBean;
 import cn.winter.bean.factory.config.BeanDefinition;
 import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.util.ClassUtils;
+import cn.winter.util.StringValueResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
     /** ClassLoader to resolve bean class names with, if necessary */
     private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
+
+    /**
+     * String resolvers to apply e.g. to annotation attribute values
+     */
+    private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
 
     @Override
     public Object getBean(String beanName) {
@@ -59,6 +65,21 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
             object = getObjectFromFactoryBean(factoryBean, beanName);
         }
         return object;
+    }
+
+    @Override
+    public void addEmbeddedValueResolver(StringValueResolver valueResolver) {
+        this.embeddedValueResolvers.add(valueResolver);
+    }
+
+    @Override
+    public String resolveEmbeddedValue(String value) {
+        String result = value;
+
+        for (StringValueResolver r : this.embeddedValueResolvers) {
+            result = r.resolveStringValue(value);
+        }
+        return result;
     }
 
     protected abstract BeanDefinition getBeanDefinition(String name);

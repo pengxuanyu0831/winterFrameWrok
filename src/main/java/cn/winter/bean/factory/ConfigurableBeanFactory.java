@@ -2,6 +2,7 @@ package cn.winter.bean.factory;
 
 import cn.winter.bean.factory.config.BeanPostProcessor;
 import cn.winter.bean.factory.config.SingletonBeanRegistry;
+import cn.winter.util.StringValueResolver;
 
 /**
  * Configuration interface to be implemented by most bean factories. Provides
@@ -25,4 +26,15 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
      * 销毁单例
      */
     void destroySingletons();
+
+
+    void addEmbeddedValueResolver(StringValueResolver valueResolver);
+
+
+    /**
+     * 实际处理@Value 注解的值
+     * @param value
+     * @return
+     */
+    String resolveEmbeddedValue(String value);
 }
