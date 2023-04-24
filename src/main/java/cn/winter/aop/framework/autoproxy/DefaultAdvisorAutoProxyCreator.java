@@ -5,6 +5,7 @@ import cn.winter.aop.*;
 import cn.winter.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import cn.winter.aop.framework.ProxyFactory;
 import cn.winter.bean.BeansException;
+import cn.winter.bean.PropertyValues;
 import cn.winter.bean.factory.BeanFactory;
 import cn.winter.bean.factory.BeanFactoryAware;
 import cn.winter.bean.factory.config.InstantiationAwareBeanPostProcessor;
@@ -82,5 +83,9 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
-    
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
+    }
 }

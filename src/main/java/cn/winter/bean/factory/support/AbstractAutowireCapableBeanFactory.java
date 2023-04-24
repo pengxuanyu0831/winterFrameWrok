@@ -25,12 +25,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object createBean(String beanName, BeanDefinition beanDefinition,Object... args) {
         Object bean = null;
         try{
+            // 判断是否返回代理对象
             bean = resolveBeforeInstantiation(beanName, beanDefinition);
             if (null != bean) {
                 return bean;
             }
             // bean 对象的实例化
             bean = this.createBeanInstance(beanDefinition, beanName, args);
+            // 在设置 Bean 属性之前，允许 BeanPostProcessor 修改属性值
+            applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
             // 填充对象属性，在实例化之后
             this.applyPropertyValues(beanName,bean,beanDefinition);
             // 执行bean 的前置 和后置方法
@@ -45,9 +48,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (beanDefinition.isSingleton()) {
             // 实例化完成， 放到单例bean 的对象缓存中
             // 如果是单例bean 执行加入单例对象缓存中
-            addSingleton(beanName,bean);
+            registerSingleton(beanName,bean);
         }
-
         return bean;
     }
 
@@ -80,6 +82,26 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             }
         }
         return null;
+    }
+
+    /**
+     * 在设置 Bean 属性之前，允许 BeanPostProcessor 修改属性值
+     *
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
+    protected void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
+                PropertyValues pvs = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(beanDefinition.getPropertyValues(), bean, beanName);
+                if (null != pvs) {
+                    for (PropertyValue propertyValue : pvs.getPropertyValues()) {
+                        beanDefinition.getPropertyValues().addPropertyValues(propertyValue);
+                    }
+                }
+            }
+        }
     }
 
     protected Object createBeanInstance(BeanDefinition beanDefinition,

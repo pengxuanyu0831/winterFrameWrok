@@ -10,9 +10,14 @@ import cn.winter.bean.factory.config.BeanDefinition;
  * @create: 2021/11/20 22:24
  */
 public interface BeanFactory {
-    public Object getBean(String name) throws BeansException;
+    Object getBean(String name) throws BeansException;
 
-    public Object getBean(String name, Object... args) throws BeansException;
+    Object getBean(String name, Object... args) throws BeansException;
 
-    public void registerBeanDefinition(String name, BeanDefinition beanDefinition);
+    void registerBeanDefinition(String name, BeanDefinition beanDefinition);
+
+    <T> T getBean(Class<T> type);
+
+    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
+
 }

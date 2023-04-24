@@ -29,12 +29,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     @Override
     public Object getBean(String name) throws BeansException {
-        return null;
+        return getBeanFactory().getBean(name);
     }
 
     @Override
     public Object getBean(String name, Object... args) throws BeansException {
-        return null;
+        return getBeanFactory().getBean(name, args);
+    }
+
+    @Override
+    public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
+        return getBeanFactory().getBean(name, requiredType);
+    }
+
+    @Override
+    public <T> T getBean(Class<T> requiredType) throws BeansException {
+        return getBeanFactory().getBean(requiredType);
     }
 
     @Override
@@ -66,7 +76,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
      */
     @Override
     public String[] getBeanDefinitionNames() {
-        return new String[0];
+        return getBeanFactory().getBeanDefinitionNames();
     }
 
     /**
