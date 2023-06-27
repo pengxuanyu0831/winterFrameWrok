@@ -16,7 +16,7 @@ public interface BeanFactory {
 
     void registerBeanDefinition(String name, BeanDefinition beanDefinition);
 
-    <T> T getBean(Class<T> type);
+    <T> T getBean(Class<T> type) throws InstantiationException, IllegalAccessException;
 
     <T> T getBean(String name, Class<T> requiredType) throws BeansException;
 

@@ -12,8 +12,11 @@ import cn.winter.context.event.*;
 import cn.winter.core.io.DefaultResourceLoader;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program spring-core
@@ -26,6 +29,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
 
     private ApplicationEventMulticaster applicationEventMulticaster;
+
+    private final static Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -42,9 +47,26 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         return getBeanFactory().getBean(name, requiredType);
     }
 
+    // todo 此时是一级缓存
     @Override
-    public <T> T getBean(Class<T> requiredType) throws BeansException {
-        return getBeanFactory().getBean(requiredType);
+    public <T> T getBean(Class<T> beanClass) throws BeansException, InstantiationException, IllegalAccessException {
+        String lowerCase = beanClass.getSimpleName().toLowerCase(Locale.ROOT);
+        if(singletonObjects.containsKey(lowerCase)){
+            return (T) singletonObjects.get(lowerCase);
+        }
+
+        T t = beanClass.newInstance();
+        singletonObjects.put(lowerCase, t);
+        Field[] fields = t.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            f.setAccessible(true);
+            Class<?> type = f.getType();
+            String s = type.getSimpleName().toLowerCase(Locale.ROOT);
+            f.set(t, singletonObjects.containsKey(s) ? singletonObjects.get(s) : getBean(type));
+            f.setAccessible(false);
+        }
+
+        return t;
     }
 
     @Override
