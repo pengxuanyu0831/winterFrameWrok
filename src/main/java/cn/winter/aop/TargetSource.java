@@ -1,5 +1,7 @@
 package cn.winter.aop;
 
+import cn.winter.util.ClassUtils;
+
 /**
  * @author xuanyu peng
  * @description:
@@ -13,8 +15,14 @@ public class TargetSource {
     }
 
 
+    /**
+     * 用于获取Target对象的接口 用于判断是否是JDK动态代理，如果是JDK动态代理，那么获取的就是接口，如果是CGLIB动态代理，那么获取的就是类
+     * @return
+     */
     public Class<?>[] getTargetClass() {
-        return this.target.getClass().getInterfaces();
+        Class<?> classes = this.target.getClass();
+        classes = ClassUtils.isCglibProxyClass(classes) ? this.target.getClass().getSuperclass() : classes;
+        return classes.getInterfaces();
     }
 
 

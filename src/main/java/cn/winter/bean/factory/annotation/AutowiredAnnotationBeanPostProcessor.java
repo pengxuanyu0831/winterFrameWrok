@@ -48,6 +48,7 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
     public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
 
         Class<?> clazz = bean.getClass();
+        // 需要判断是否是cglib代理类
         clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass() : clazz;
 
         Field[] fields = clazz.getDeclaredFields();

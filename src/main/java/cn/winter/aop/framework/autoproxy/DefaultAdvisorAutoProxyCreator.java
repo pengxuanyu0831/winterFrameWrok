@@ -40,7 +40,36 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
 
-        if (isInfrastructureClass(beanClass)) return null;
+
+        return null;
+    }
+
+    private boolean isInfrastructureClass(Class<?> beanClass) {
+        return Advice.class.isAssignableFrom(beanClass) || Pointcut.class.isAssignableFrom(beanClass) || Advisor.class.isAssignableFrom(beanClass);
+    }
+
+    /**
+     * @param bean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
+
+    /**
+     * 在 Bean 对象实例化完成后，设置属性操作之后执行此方法,这里的 bean 是已经实例化完成的
+     * @param bean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+
+        if (isInfrastructureClass(bean.getClass())) return null;
 
         Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfTypes(AspectJExpressionPointcutAdvisor.class).values();
 
@@ -48,13 +77,13 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         //应的属性信息，包括：目标对象、拦截方法、匹配器，之后返回代理对象即可
         for (AspectJExpressionPointcutAdvisor advisor : advisors) {
             ClassFilter classFilter = advisor.getPointcut().getClassFilter();
-            if (!classFilter.matches(beanClass)) continue;
+            if (!classFilter.matches(bean.getClass())) continue;
 
             AdviceSupport advisedSupport = new AdviceSupport();
 
             TargetSource targetSource = null;
             try {
-                targetSource = new TargetSource(beanClass.getDeclaredConstructor().newInstance());
+                targetSource = new TargetSource(bean.getClass().getDeclaredConstructor().newInstance());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -64,23 +93,7 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
             advisedSupport.setProxyTargetClass(false);
 
             return new ProxyFactory(advisedSupport).getProxy();
-
         }
-
-        return null;
-    }
-
-    private boolean isInfrastructureClass(Class<?> beanClass) {
-        return Advice.class.isAssignableFrom(beanClass) || Pointcut.class.isAssignableFrom(beanClass) || Advisor.class.isAssignableFrom(beanClass);
-    }
-
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
 
