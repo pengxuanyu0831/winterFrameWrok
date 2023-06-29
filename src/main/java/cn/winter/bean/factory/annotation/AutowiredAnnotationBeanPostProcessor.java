@@ -45,7 +45,7 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
     }
 
     @Override
-    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException, InstantiationException, IllegalAccessException {
 
         Class<?> clazz = bean.getClass();
         // 需要判断是否是cglib代理类

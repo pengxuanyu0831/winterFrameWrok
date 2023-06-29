@@ -24,5 +24,5 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor{
      * @return
      * @throws BeansException
      */
-    PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException;
+    PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException, InstantiationException, IllegalAccessException;
 }
