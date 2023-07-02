@@ -40,7 +40,6 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
      * @param beanName
      * @return
      */
-
     @Override
     public Object getSingleton(String beanName) {
         // 从一级缓存中获取
