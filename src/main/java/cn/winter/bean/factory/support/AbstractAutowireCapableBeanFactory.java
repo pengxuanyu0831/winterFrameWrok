@@ -24,33 +24,50 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     protected Object createBean(String beanName, BeanDefinition beanDefinition,Object... args) {
         Object bean = null;
+        // 判断是否返回代理对象
+        bean = resolveBeforeInstantiation(beanName, beanDefinition);
+        if (null != bean) {
+            return bean;
+        }
+        return doCreateBean(beanName,beanDefinition,args);
+    }
+
+    protected Object doCreateBean(String beanName, BeanDefinition beanDefinition, Object[] args) {
+        Object bean = null;
         try{
-            // 判断是否返回代理对象
-            bean = resolveBeforeInstantiation(beanName, beanDefinition);
-            if (null != bean) {
-                return bean;
-            }
             // bean 对象的实例化
             bean = this.createBeanInstance(beanDefinition, beanName, args);
+
+            // 处理循环依赖，将实例化后的Bean对象提前放入缓存中暴露出来
+            if (beanDefinition.isSingleton()) {
+                // 获取属性填充器
+                Object finalBean = bean;
+                // 如果一级缓存里没有，就放到三级缓存里，如果有就直接返回
+                addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, beanDefinition, finalBean));
+            }
+
             // 在设置 Bean 属性之前，允许 BeanPostProcessor 修改属性值
             applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
             // 填充对象属性，在实例化之后
             this.applyPropertyValues(beanName,bean,beanDefinition);
             // 执行bean 的前置 和后置方法
             bean = initializeBean(beanName, bean, beanDefinition);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             throw new BeansException("Instantiation of Bean Failed", e);
         }
 
         // 注册实现了 DisposableBean 接口的Bean 对象
         // 创建Bean 对象的实例的时候，先保存销毁的方法，方便后续调用
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+        // 判断 SCOPE_SINGLETON、SCOPE_PROTOTYPE
+        Object exposedObject = bean;
         if (beanDefinition.isSingleton()) {
             // 实例化完成， 放到单例bean 的对象缓存中
+            exposedObject = getSingleton(beanName);
             // 如果是单例bean 执行加入单例对象缓存中
-            registerSingleton(beanName,bean);
+            registerSingleton(beanName,exposedObject);
         }
-        return bean;
+        return exposedObject;
     }
 
 
@@ -62,6 +79,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (bean instanceof DisposableBean || beanDefinition.getDestroyMethodName() != null) {
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
+    }
+
+    protected Object getEarlyBeanReference(String beanName, BeanDefinition beanDefinition, Object bean) {
+        Object exposedObject = bean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                exposedObject = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).getEarlyBeanReference(exposedObject, beanName);
+                if (null == exposedObject) return exposedObject;
+            }
+        }
+
+        return exposedObject;
     }
 
     protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
@@ -91,7 +120,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      * @param bean
      * @param beanDefinition
      */
-    protected void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+    protected void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) throws InstantiationException, IllegalAccessException {
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
                 PropertyValues pvs = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(beanDefinition.getPropertyValues(), bean, beanName);
